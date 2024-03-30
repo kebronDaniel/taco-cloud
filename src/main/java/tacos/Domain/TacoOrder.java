@@ -19,7 +19,7 @@ public class TacoOrder {
 
     private List<Taco> tacos = new ArrayList<>();
 
-    public void setTacos(Taco taco) {
+    public void addTacos(Taco taco) {
         this.tacos.add(taco);
     }
 }
