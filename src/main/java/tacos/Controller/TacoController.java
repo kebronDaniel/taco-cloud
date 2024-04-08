@@ -68,7 +68,7 @@ public class TacoController {
     public String processTaco(Taco taco, @ModelAttribute TacoOrder tacoOrder){
         tacoOrder.addTacos(taco);
         log.info("Processing taco order ---------------- {}", taco);
-        return "redirect:/";
+        return "redirect:/orders/current";
     }
 
 }
