@@ -68,18 +68,28 @@ public class TacoController {
 
     @PostMapping
     public String processTaco(@Valid Taco taco, Errors errors, @ModelAttribute TacoOrder tacoOrder, @RequestParam(value = "action", required = false) String action) {
-        if (errors.hasErrors()) {
-            System.out.println("errors" + errors);
-            return "design";
-        }
         if ("add".equals(action)) {
-            tacoOrder.addTacos(taco);
-            log.info("Processing taco order ---------------- {}", taco);
-            return "redirect:/design";
+            if (errors.hasErrors()) {
+                System.out.println("errors" + errors);
+                return "design";
+            }else {
+                tacoOrder.addTacos(taco);
+                log.info("Processing taco order ---------------- {}", taco);
+                return "redirect:/design";
+            }
         }else {
-            tacoOrder.addTacos(taco);
-            log.info("Processing taco order ---------------- {}", taco);
-            return "redirect:/orders/current";
+            if(tacoOrder.getTacos().size()>0){
+                return "redirect:/orders/current";
+            }else {
+                if (errors.hasErrors()) {
+                    System.out.println("errors" + errors);
+                    return "design";
+                } else {
+                    tacoOrder.addTacos(taco);
+                    log.info("Processing taco order ---------------- {}", taco);
+                    return "redirect:/orders/current";
+                }
+            }
         }
     }
 
