@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @Controller
 @RequestMapping("/design")
-@SessionAttributes("tacoOrder")
+@SessionAttributes("tacoOrder") // this would make the tacoOrder object available across the entire session.
 public class TacoController {
 
     @ModelAttribute
@@ -46,7 +46,7 @@ public class TacoController {
            model.addAttribute(type.toString().toLowerCase(), filterByType(ingredients, type));
         }
         // this is more convenient way to add the model attribute this way because there are several of them being
-        // bind to ingredients so it's not a mapping between a single name to an object.
+        // bind to ingredients, so it's not a mapping between a single name to an object.
     }
 
     @ModelAttribute("tacoOrder")
@@ -67,14 +67,20 @@ public class TacoController {
     }
 
     @PostMapping
-    public String processTaco(@Valid Taco taco, Errors errors, @ModelAttribute TacoOrder tacoOrder){
+    public String processTaco(@Valid Taco taco, Errors errors, @ModelAttribute TacoOrder tacoOrder, @RequestParam(value = "action", required = false) String action) {
         if (errors.hasErrors()) {
             System.out.println("errors" + errors);
             return "design";
         }
-        tacoOrder.addTacos(taco);
-        log.info("Processing taco order ---------------- {}", taco);
-        return "redirect:/orders/current";
+        if ("add".equals(action)) {
+            tacoOrder.addTacos(taco);
+            log.info("Processing taco order ---------------- {}", taco);
+            return "redirect:/design";
+        }else {
+            tacoOrder.addTacos(taco);
+            log.info("Processing taco order ---------------- {}", taco);
+            return "redirect:/orders/current";
+        }
     }
 
 }

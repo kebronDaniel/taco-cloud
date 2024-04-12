@@ -9,6 +9,14 @@
     <h1>Design your taco </h1>
     <img th:src="@{/images/taco.jpeg}"/>
 
+    <h3>your Tacos</h3>
+
+    <ul>
+        <li th:each="taco : ${tacoOrder.tacos}">
+            <span th:text="${taco.name}">taco name</span>
+        </li>
+    </ul>
+
     <form method="POST" th:object="${taco}">
         <div class="grid">
             <div class="ingredient-group" id="wraps">
@@ -56,10 +64,11 @@
                   th:errors="*{name}">
             </span>
             <br/>
-            <button>Submit Your Taco</button>
+            <br/>
+            <button type="submit" name="action" value="save">Save and Continue</button>
+            <button type="submit" name="action" value="add">Save and Add more Tacos</button>
         </div>
     </form>
 
-    <p th:text="${sample}"></p>
 </body>
 </html>
