@@ -14,7 +14,7 @@ import tacos.Domain.TacoOrder;
 @Controller
 @Slf4j
 @RequestMapping("/orders")
-@SessionAttributes("tacoOrder")
+@SessionAttributes("tacoOrder") //This is to use the already defined tacoOrder object in the session. and later to close it.
 public class OrderController {
 
     @GetMapping("/current")
