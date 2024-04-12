@@ -1,8 +1,10 @@
 package tacos.Controller;
 
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 import tacos.Converter.IngredientByIdConverter;
 import tacos.Domain.Ingredient;
@@ -65,7 +67,11 @@ public class TacoController {
     }
 
     @PostMapping
-    public String processTaco(Taco taco, @ModelAttribute TacoOrder tacoOrder){
+    public String processTaco(@Valid Taco taco, Errors errors, @ModelAttribute TacoOrder tacoOrder){
+        if (errors.hasErrors()) {
+            System.out.println("errors" + errors);
+            return "design";
+        }
         tacoOrder.addTacos(taco);
         log.info("Processing taco order ---------------- {}", taco);
         return "redirect:/orders/current";
