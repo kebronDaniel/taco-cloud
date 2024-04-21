@@ -2,6 +2,7 @@ package tacos.Controller;
 
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -11,6 +12,8 @@ import tacos.Domain.Ingredient;
 import tacos.Domain.IngredientType;
 import tacos.Domain.Taco;
 import tacos.Domain.TacoOrder;
+import tacos.Service.IngredientTypeService;
+import tacos.Service.IngredientsService;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -24,26 +27,21 @@ import java.util.stream.Collectors;
 @SessionAttributes("tacoOrder") // this would make the tacoOrder object available across the entire session.
 public class TacoController {
 
+    @Autowired
+    private IngredientsService ingredientsService;
+
+    @Autowired
+    private IngredientTypeService ingredientTypeService;
+
     @ModelAttribute
     public void addIngredientToModel(Model model){
 
-        List<Ingredient> ingredients = Arrays.asList(
-            new Ingredient("FLTO", "Flour Tortilla", IngredientType.WRAP),
-            new Ingredient("COTO", "Corn Tortilla", IngredientType.WRAP),
-            new Ingredient("GRBF", "Ground Beef", IngredientType.PROTEIN),
-            new Ingredient("CARN", "Carnitas", IngredientType.PROTEIN),
-            new Ingredient("TMTO", "Diced Tomatoes", IngredientType.VEGGIES),
-            new Ingredient("LETC", "Lettuce", IngredientType.VEGGIES),
-            new Ingredient("CHED", "Cheddar", IngredientType.CHEESE),
-            new Ingredient("JACK", "Monterrey Jack", IngredientType.CHEESE),
-            new Ingredient("SLSA", "Salsa", IngredientType.SAUCE),
-            new Ingredient("SRCR", "Sour Cream", IngredientType.SAUCE));
+        List<Ingredient> ingredients = ingredientsService.getAllIngredients();
 
-
-        IngredientType[] types = IngredientType.values();
+        List<IngredientType> types = ingredientTypeService.findAll();
 
         for (IngredientType type : types) {
-           model.addAttribute(type.toString().toLowerCase(), filterByType(ingredients, type));
+           model.addAttribute(type.getName().toString().toLowerCase(), filterByType(ingredients, type));
         }
         // this is more convenient way to add the model attribute this way because there are several of them being
         // bind to ingredients, so it's not a mapping between a single name to an object.
@@ -68,29 +66,18 @@ public class TacoController {
 
     @PostMapping
     public String processTaco(@Valid Taco taco, Errors errors, @ModelAttribute TacoOrder tacoOrder, @RequestParam(value = "action", required = false) String action) {
-        if ("add".equals(action)) {
-            if (errors.hasErrors()) {
-                System.out.println("errors" + errors);
-                return "design";
-            }else {
-                tacoOrder.addTacos(taco);
-                log.info("Processing taco order ---------------- {}", taco);
-                return "redirect:/design";
-            }
-        }else {
-            if(tacoOrder.getTacos().size()>0){
-                return "redirect:/orders/current";
-            }else {
-                if (errors.hasErrors()) {
-                    System.out.println("errors" + errors);
-                    return "design";
-                } else {
-                    tacoOrder.addTacos(taco);
-                    log.info("Processing taco order ---------------- {}", taco);
-                    return "redirect:/orders/current";
-                }
-            }
-        }
-    }
 
+        if (errors.hasErrors()){
+            System.out.println("errors" + errors);
+            return "design";
+        }
+        tacoOrder.addTacos(taco);
+        if ("add".equals(action)){
+            log.info("Processing taco order ---------------- {}", taco);
+            return "redirect:/design";
+        }
+        log.info("Processing taco order ---------------- {}", taco);
+        return "redirect:/orders/current";
+    }
 }
+
