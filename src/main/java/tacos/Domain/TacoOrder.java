@@ -3,8 +3,10 @@ package tacos.Domain;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import lombok.Data;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.validator.constraints.CreditCardNumber;
 
 import java.io.Serializable;
@@ -19,8 +21,8 @@ public class TacoOrder implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
 
     @NotBlank(message = "Delivery name is required")
     private String deliveryName;
@@ -46,7 +48,9 @@ public class TacoOrder implements Serializable {
     @Digits(fraction = 0, integer = 3, message = "Invalid CVV")
     private Integer ccCVV;
 
-    private Date placedAt = new Date();
+//    @CreationTimestamp
+//    @Column(updatable = false)
+//    private Date placedAt;
 
     @OneToMany(cascade = CascadeType.ALL)
     private List<Taco> tacos = new ArrayList<>();

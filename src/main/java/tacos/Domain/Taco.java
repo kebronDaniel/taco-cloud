@@ -5,6 +5,8 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
+import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.data.annotation.CreatedDate;
 
 import java.util.Date;
 import java.util.List;
@@ -14,8 +16,8 @@ import java.util.List;
 public class Taco {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
 
     @NotBlank(message = "Name cannot be blank")
     private String name;
@@ -23,7 +25,9 @@ public class Taco {
     @NotNull()
     @Size(min = 1, message = "You must choose at least one ingredient")
 
-    private Date createdAt = new Date();
+//    @CreationTimestamp
+//    @Column(updatable = false)
+//    private Date createdAt;
 
     @ManyToMany
     private List<Ingredient> ingredients;
