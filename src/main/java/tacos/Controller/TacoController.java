@@ -3,6 +3,7 @@ package tacos.Controller;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -14,6 +15,8 @@ import tacos.Domain.Taco;
 import tacos.Domain.TacoOrder;
 import tacos.Service.IngredientTypeService;
 import tacos.Service.IngredientsService;
+import tacos.Service.TacoOrderService;
+import tacos.Service.TacoService;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -32,6 +35,12 @@ public class TacoController {
 
     @Autowired
     private IngredientTypeService ingredientTypeService;
+
+    @Autowired
+    private TacoService tacoService;
+
+    @Autowired
+    private TacoOrderService tacoOrderService;
 
     @ModelAttribute
     public void addIngredientToModel(Model model){
@@ -66,7 +75,6 @@ public class TacoController {
 
     @PostMapping
     public String processTaco(@Valid Taco taco, Errors errors, @ModelAttribute TacoOrder tacoOrder, @RequestParam(value = "action", required = false) String action) {
-
         if (errors.hasErrors()){
             System.out.println("errors" + errors);
             return "design";
@@ -78,6 +86,22 @@ public class TacoController {
         }
         log.info("Processing taco order ---------------- {}", taco);
         return "redirect:/orders/current";
+    }
+
+    @DeleteMapping("/taco/delete/{id}")
+    public String deleteTaco(@PathVariable("id") int id, @ModelAttribute TacoOrder tacoOrder) {
+        tacoService.deleteTaco(tacoOrder.getId());
+        return "redirect:/design";
+    }
+
+    @GetMapping("/removeTaco/{name}")
+    public ResponseEntity<String> showTaco(@PathVariable("name") String name, @ModelAttribute TacoOrder tacoOrder) {
+        log.info("taco order " + tacoOrder);
+        List<Taco> tacos = tacoOrder.getTacos();
+        Taco taco = tacos.stream().filter(t -> t.getName().equals(name)).findFirst().orElse(null);
+        tacoOrder.removeTaco(taco);
+        log.info("taco order " + tacoOrder);
+        return ResponseEntity.ok("Taco Removed");
     }
 }
 

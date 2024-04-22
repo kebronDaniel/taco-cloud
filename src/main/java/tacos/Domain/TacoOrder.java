@@ -58,4 +58,8 @@ public class TacoOrder implements Serializable {
     public void addTacos(Taco taco) {
         this.tacos.add(taco);
     }
+
+    public void removeTaco(Taco taco) {
+        this.tacos.remove(taco);
+    }
 }
