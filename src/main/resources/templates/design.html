@@ -11,11 +11,15 @@
 
     <h3>your Tacos</h3>
 
-    <ul>
-        <li th:each="taco : ${tacoOrder.tacos}">
-            <span th:text="${taco.name}">taco name</span>
-        </li>
-    </ul>
+    <div th:if="${not #lists.isEmpty(tacoOrder.tacos)}">
+        <ul>
+            <li th:each="taco : ${tacoOrder.tacos}">
+                <span th:text="${taco.name}">taco name</span>
+                <button th:taco-name="${taco.name}" th:text="'Remove this taco'" onclick="removeTaco(this.getAttribute('taco-name'))"></button>
+            </li>
+        </ul>
+        <a href="/orders/current">Go To Order Page</a>
+    </div>
 
     <form method="POST" th:object="${taco}">
         <div class="grid">
@@ -70,5 +74,16 @@
         </div>
     </form>
 
+
+    <script th:inline="javascript">
+        function removeTaco(name) {
+            fetch(`/design/removeTaco/${name}`, {
+                method: 'GET'
+            })
+        .then(response => {
+            window.location.href = '/design';
+         })
+        }
+    </script>
 </body>
 </html>

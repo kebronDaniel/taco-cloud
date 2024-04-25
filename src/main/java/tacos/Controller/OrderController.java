@@ -2,14 +2,15 @@ package tacos.Controller;
 
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
+import tacos.Domain.Taco;
 import tacos.Domain.TacoOrder;
+
+import java.util.List;
 
 @Controller
 @Slf4j
@@ -33,4 +34,17 @@ public class OrderController {
         sessionStatus.setComplete();
         return "redirect:/";
     }
+
+    @GetMapping("/removeTaco/{name}")
+    public ResponseEntity<String> removeTaco(@PathVariable("name") String name, @ModelAttribute TacoOrder tacoOrder) {
+        List<Taco> tacos = tacoOrder.getTacos();
+        Taco taco = tacos.stream().filter(t -> t.getName().equals(name)).findFirst().orElse(null);
+        tacoOrder.removeTaco(taco);
+        if (tacoOrder.getTacos().size() == 0){
+            return ResponseEntity.badRequest().body("There is nothing to remove from order");
+        }
+        return ResponseEntity.ok("Taco Removed");
+    }
+
+
 }
