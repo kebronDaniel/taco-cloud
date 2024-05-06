@@ -1,5 +1,7 @@
 package tacos.Service;
 
-public interface TacoService {
-    void deleteTaco(int id);
+import tacos.Domain.Taco;
+import tacos.Repositories.TacoRepo;
+
+public interface TacoService extends CrudService<Taco, Integer, TacoRepo> {
 }

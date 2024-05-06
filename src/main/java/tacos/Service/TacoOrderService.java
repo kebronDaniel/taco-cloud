@@ -1,4 +1,7 @@
 package tacos.Service;
 
-public interface TacoOrderService {
+import tacos.Domain.TacoOrder;
+import tacos.Repositories.TacoOrderRepo;
+
+public interface TacoOrderService extends CrudService<TacoOrder, Integer, TacoOrderRepo> {
 }

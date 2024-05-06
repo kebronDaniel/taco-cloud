@@ -8,7 +8,7 @@ import tacos.Repositories.IngredientTypeRepo;
 import java.util.List;
 
 @Service
-public class IngredientTypeServiceImpl implements IngredientTypeService {
+public class IngredientTypeServiceImpl extends CrudServiceImpl<IngredientType, Integer, IngredientTypeRepo> implements IngredientTypeService {
 
     @Autowired
     private IngredientTypeRepo ingredientTypeRepo;
@@ -16,27 +16,5 @@ public class IngredientTypeServiceImpl implements IngredientTypeService {
     @Override
     public IngredientType findByName(String name) {
         return ingredientTypeRepo.findByName(name);
-    }
-
-    @Override
-    public List<IngredientType> saveAll(List<IngredientType> types) {
-        return (List<IngredientType>) ingredientTypeRepo.saveAll(types);
-    }
-
-    @Override
-    public List<IngredientType> findAll() {
-        return (List<IngredientType>) ingredientTypeRepo.findAll();
-    }
-
-
-    @Override
-    public long count() {
-        return ingredientTypeRepo.count();
-    }
-
-
-    @Override
-    public void deleteAll() {
-        ingredientTypeRepo.deleteAll();
     }
 }

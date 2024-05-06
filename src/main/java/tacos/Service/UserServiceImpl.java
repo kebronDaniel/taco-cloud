@@ -9,7 +9,7 @@ import tacos.Domain.User;
 import tacos.Repositories.UserRepo;
 
 @Service
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl extends CrudServiceImpl<User, Integer, UserRepo> implements UserService {
 
     @Autowired
     private UserRepo userRepo;
@@ -23,7 +23,7 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public User save(User user) {
-        return userRepo.save(user);
+    public User findByUsername(String username) {
+        return userRepo.findByUsername(username);
     }
 }

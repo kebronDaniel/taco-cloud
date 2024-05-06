@@ -8,15 +8,6 @@ import tacos.Repositories.IngredientRepo;
 
 import java.util.List;
 
-public interface IngredientsService {
-    List<Ingredient> getAllIngredients();
-
-    List<Ingredient> saveAll(List<Ingredient> ingredients);
-
-    Ingredient findById(int id);
-
-    long count();
-
-    void deleteAll();
+public interface IngredientsService extends CrudService<Ingredient, Integer, IngredientRepo> {
 
 }
