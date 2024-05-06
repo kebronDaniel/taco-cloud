@@ -8,12 +8,15 @@ import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.data.annotation.CreatedDate;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
 @Data
 @Entity
-public class Taco {
+public class Taco implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

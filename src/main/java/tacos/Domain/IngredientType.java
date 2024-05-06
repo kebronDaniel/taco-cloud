@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
+import java.io.Serializable;
 import java.util.List;
 
 @Data
@@ -13,7 +14,9 @@ import java.util.List;
 @AllArgsConstructor
 @RequiredArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PRIVATE, force = true)
-public class IngredientType {
+public class IngredientType implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

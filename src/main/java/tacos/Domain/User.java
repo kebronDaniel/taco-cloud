@@ -1,22 +1,21 @@
 package tacos.Domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 @Entity
 @Data
-@NoArgsConstructor(access = AccessLevel.PRIVATE, force = true)
+@NoArgsConstructor(access = AccessLevel.PUBLIC, force = true)
 @RequiredArgsConstructor
-public class User implements UserDetails {
+public class User implements UserDetails, Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -33,7 +32,12 @@ public class User implements UserDetails {
     private final String zip;
     private final String phoneNumber;
 
+    @ManyToMany
+    private List<Role> roles = new ArrayList<>();
 
+    public void addRole(Role role) {
+        roles.add(role);
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -59,4 +63,5 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
 }
