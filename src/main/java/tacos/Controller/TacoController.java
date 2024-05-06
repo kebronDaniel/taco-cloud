@@ -45,7 +45,7 @@ public class TacoController {
     @ModelAttribute
     public void addIngredientToModel(Model model){
 
-        List<Ingredient> ingredients = ingredientsService.getAllIngredients();
+        List<Ingredient> ingredients = ingredientsService.findAll();
 
         List<IngredientType> types = ingredientTypeService.findAll();
 
@@ -66,11 +66,13 @@ public class TacoController {
         return new Taco();
     }
 
-    @GetMapping("")
-    public String showDesignForm(){return "/design";}
-
     private Iterable<Ingredient> filterByType(List<Ingredient> ingredients, IngredientType type){
         return ingredients.stream().filter(x -> x.getType() == type).collect(Collectors.toList());
+    }
+
+    @GetMapping
+    public String showDesignForm(Model model) {
+        return "design";
     }
 
     @PostMapping
@@ -90,7 +92,7 @@ public class TacoController {
 
     @DeleteMapping("/taco/delete/{id}")
     public String deleteTaco(@PathVariable("id") int id, @ModelAttribute TacoOrder tacoOrder) {
-        tacoService.deleteTaco(tacoOrder.getId());
+        tacoService.deleteById(tacoOrder.getId());
         return "redirect:/design";
     }
 

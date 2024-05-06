@@ -12,6 +12,7 @@ import tacos.Service.IngredientsService;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Component
 public class IngredientByIdConverter implements Converter<Integer, Ingredient> {
@@ -23,6 +24,6 @@ public class IngredientByIdConverter implements Converter<Integer, Ingredient> {
 
     @Override
     public Ingredient convert(Integer id) {
-        return ingredientsService.findById(id);
+        return ingredientsService.findById(id).orElse(null);
     }
 }
