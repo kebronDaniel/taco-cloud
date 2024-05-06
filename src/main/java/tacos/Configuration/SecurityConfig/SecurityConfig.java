@@ -7,6 +7,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @EnableWebSecurity
@@ -23,7 +24,13 @@ public class SecurityConfig {
                 .authorizeHttpRequests(requests-> requests.requestMatchers("/design","/orders").authenticated()
                         .requestMatchers("/","/**").permitAll()
                         .anyRequest().permitAll())
-                .formLogin(login -> login.loginPage("/login").permitAll());
+                .formLogin(login -> login.loginPage("/login").permitAll()).logout(lOut -> {
+                    lOut.invalidateHttpSession(true)
+                            .clearAuthentication(true)
+                            .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                            .logoutSuccessUrl("/login?logout")
+                            .permitAll();
+            });
         return http.build();
 
         // when we direct the process to authenticate the user,

@@ -7,6 +7,9 @@
 </head>
 <body>
 
+    <a href="/logout">Logout</a>
+
+
     <form method="POST" th:object="${tacoOrder}" th:action="@{/orders}">
         <h1>Order your taco here</h1>
         <img th:src="@{/images/taco.jpeg}"/>

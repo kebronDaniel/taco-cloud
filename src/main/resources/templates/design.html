@@ -11,6 +11,8 @@
 
     <h3>your Tacos</h3>
 
+    <a href="/logout">Logout</a>
+
     <div th:if="${not #lists.isEmpty(tacoOrder.tacos)}">
         <ul>
             <li th:each="taco : ${tacoOrder.tacos}">
