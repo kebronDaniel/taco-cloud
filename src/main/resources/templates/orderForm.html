@@ -7,8 +7,6 @@
 </head>
 <body>
 
-    <a href="/logout">Logout</a>
-
 
     <form method="POST" th:object="${tacoOrder}" th:action="@{/orders}">
         <h1>Order your taco here</h1>
@@ -16,12 +14,6 @@
 
         <h3>Your tacos in this order:</h3>
         <a th:href="@{/design}" id="another">Design another taco</a><br/>
-
-<!--        <ul>-->
-<!--            <li th:each="taco : ${tacoOrder.tacos}">-->
-<!--                <span th:text="${taco.name}">taco name</span>-->
-<!--            </li>-->
-<!--        </ul>-->
 
         <ul>
             <li th:each="taco : ${tacoOrder.tacos}">
@@ -91,6 +83,8 @@
         <br/>
         <input type="submit" value="Submit Order"/>
     </form>
+    <br/>
+    <a href="/logout">Logout</a>
 
     <script th:inline="javascript">
         function removeTaco(name) {
