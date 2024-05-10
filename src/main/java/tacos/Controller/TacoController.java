@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -70,11 +71,13 @@ public class TacoController {
         return ingredients.stream().filter(x -> x.getType() == type).collect(Collectors.toList());
     }
 
+    @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping
     public String showDesignForm(Model model) {
         return "design";
     }
 
+    @PreAuthorize("hasRole('ROLE_USER')")
     @PostMapping
     public String processTaco(@Valid Taco taco, Errors errors, @ModelAttribute TacoOrder tacoOrder, @RequestParam(value = "action", required = false) String action) {
         if (errors.hasErrors()){
@@ -90,12 +93,15 @@ public class TacoController {
         return "redirect:/orders/current";
     }
 
+    @PreAuthorize("hasRole('ROLE_USER')")
     @DeleteMapping("/taco/delete/{id}")
     public String deleteTaco(@PathVariable("id") int id, @ModelAttribute TacoOrder tacoOrder) {
         tacoService.deleteById(tacoOrder.getId());
         return "redirect:/design";
     }
 
+
+    @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("/removeTaco/{name}")
     public ResponseEntity<String> showTaco(@PathVariable("name") String name, @ModelAttribute TacoOrder tacoOrder) {
         log.info("taco order " + tacoOrder);
@@ -105,5 +111,6 @@ public class TacoController {
         log.info("taco order " + tacoOrder);
         return ResponseEntity.ok("Taco Removed");
     }
+
 }
 

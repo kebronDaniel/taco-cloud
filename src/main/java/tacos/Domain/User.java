@@ -64,4 +64,11 @@ public class User implements UserDetails, Serializable {
         return true;
     }
 
+    @Override
+    public String toString() {
+        return "User{" +
+                "username='" + username + '\'' +
+                ", id=" + id +
+                '}';
+    }
 }

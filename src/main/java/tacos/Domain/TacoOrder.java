@@ -42,7 +42,7 @@ public class TacoOrder implements Serializable {
     @CreditCardNumber(message = "Not a valid Credit Card Number")
     private String ccNumber;
 
-    @Pattern(regexp = "^(0[1-9]|1[0-2])([\\/])([2-9][0-9])$", message="Must be formatted MM/YY")
+    @Pattern(regexp = "^(0[1-9]|1[0-2])\\/?([0-9]{4}|[0-9]{2})$", message = "Invalid expiration date format")
     private String ccExpiration;
 
     @Digits(fraction = 0, integer = 3, message = "Invalid CVV")
@@ -62,4 +62,8 @@ public class TacoOrder implements Serializable {
     public void removeTaco(Taco taco) {
         this.tacos.remove(taco);
     }
+
+    @ManyToOne
+    private User user;
+
 }
