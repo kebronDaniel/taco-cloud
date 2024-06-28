@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Taco Cloud</title>
+    <link rel="stylesheet" th:href="@{/styles.css}" />
+</head>
+<body>
+
+    <p>This is orders page made by <span th:text="${user.username}"></span> </p>
+
+    <table>
+        <thead>
+        <tr>
+            <th>Order ID</th>
+            <th>Items</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="order : ${orders}">
+            <td th:text="${order.id}"></td>
+            <td>
+                <ul>
+                    <li th:each="item : ${order.tacos}" th:text="${item.name}"></li>
+                </ul>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+</body>
+</html>

@@ -9,9 +9,11 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
+import tacos.Configuration.Properties.OrderProperties;
 import tacos.Domain.Taco;
 import tacos.Domain.TacoOrder;
 import tacos.Domain.User;
@@ -28,9 +30,12 @@ public class OrderController {
     @Autowired
     TacoOrderService tacoOrderService;
 
+    @Autowired
+    OrderProperties orderProperties;
+
     @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("/current")
-    public String orderForm(){
+    public String orderForm(@SessionAttribute("tacoOrder") TacoOrder tacoOrder){
         return "orderForm";
     }
 
